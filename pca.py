@@ -4,7 +4,7 @@ from numpy import genfromtxt
 from sklearn.preprocessing import StandardScaler
 from sklearn import decomposition
 
-imp_consum = genfromtxt('imp_consum.csv', delimiter=',')
+imp_consum = genfromtxt('../dataset_cajamar/imp_consum.csv', delimiter=',')
 
 x_std = StandardScaler().fit_transform(imp_consum)
 # cov = np.cov(x_std.T)

@@ -1,9 +1,14 @@
 
+import random
 import numpy as np
 from numpy import genfromtxt
 from sklearn.preprocessing import StandardScaler
 from sklearn import decomposition
 from sklearn.externals import joblib
+
+# fix random seed for reproducibility
+seed = 7
+np.random.seed(seed)
 
 def getData_standard(path):
     imp_consum = genfromtxt(path, delimiter=',')
@@ -72,7 +77,38 @@ def data_clean_Y(path):
     rest = test[:,87:]
     return rest
 
-# a = data_clean_x('../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt')
-# a = data_clean_Y('../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt')
-# print(a)
-# print(a.shape)
+def import_data(path_train, path_test):
+    train_x = data_clean_X(path_train)
+    train_y = data_clean_Y(path_train)
+    test = data_clean_X(path_test)
+
+    x_train = train_x[:int(len(train_x)*0.8)] #get first 80% of file list
+    x_validation = train_x[-int(len(train_x)*0.2):] #get last 20% of file list
+
+    y_train = train_y[:int(len(train_y)*0.8)] #get first 80% of file list
+    y_validation = train_y[-int(len(train_y)*0.2):] #get last 20% of file list
+
+    c = list(zip(x_train, y_train))
+    random.shuffle(c)
+    x_train, y_train = zip(*c)
+
+    c = list(zip(x_validation, y_validation))
+    random.shuffle(c)
+    x_validation, y_validation = zip(*c)
+
+    return np.array(x_train), np.array(y_train), np.array(x_validation), np.array(y_validation), np.array(test)
+
+# path_train = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt'
+# path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt'
+
+# x_train, y_train, x_validation, y_validation, test = import_data(path_train, path_test)
+
+# print("x_train",x_train.shape)
+# print("y_train",y_train.shape)
+
+# print("x_validation",x_validation.shape)
+# print("y_validation",y_validation.shape)
+
+# print("test",test.shape)
+
+# print(x_train)

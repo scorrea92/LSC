@@ -1,7 +1,6 @@
 import keras
 import get_data
 import numpy as np
-import get_data.py
 from keras.models import Sequential
 from keras.layers import Dense
 
@@ -19,6 +18,7 @@ def basic_model():
     model.add(Dense(512, init='uniform', activation='relu'))
     model.add(Dense(1, init='uniform', activation='linear'))
     model.summary()
+    sgd=SGD(lr=0.01, decay=1e-6, momentum=0.9)
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['accuracy'])
     return model
 
@@ -29,6 +29,11 @@ path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt
 
 x_train, y_train, x_val, y_val, test = get_data.import_data(path_train, path_test)
 
+x_train = x_train.reshape(x_train.shape[0], 78)
+x_val = x_val.reshape(x_val.shape[0], 78)
+
+x_train = x_train.astype('float32')
+x_val = x_val.astype('float32')
 # Tensorboard
 tbCallBack = keras.callbacks.TensorBoard(log_dir='/tmp/keras_logs', write_graph=True)
 

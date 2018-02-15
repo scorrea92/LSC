@@ -4,6 +4,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import SGD
+from keras import regularizers
 
 # Get train and tes
 
@@ -14,15 +15,14 @@ np.random.seed(seed)
 
 def basic_model():
     model = Sequential()
-    model.add(Dense(2048, input_shape=(76,), activation='relu'))
-    model.add(Dense(1024, activation='relu'))
-    model.add(Dense(512, activation='relu'))
+    model.add(Dense(512, input_shape=(76,), kernel_regularizer=regularizers.l2(0.01), activation='relu'))
+    # model.add(Dense(1024, activation='relu'))
+    # model.add(Dense(512, activation='relu'))
     model.add(Dense(1, activation='linear'))
     model.summary()
-    sgd=SGD(lr=0.01, decay=1e-6, momentum=0.9)
-    model.compile(loss='mean_squared_error', optimizer=sgd, metrics=['accuracy'])
+    sgd=SGD(lr=0.001, decay=1e-6, momentum=0.9)
+    model.compile(loss='mse', optimizer='adam', metrics=['mse','mape'])
     return model
-
 
 # Get Data
 path_train = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt'
@@ -32,6 +32,7 @@ x_train, y_train, x_val, y_val, test = get_data.import_data(path_train, path_tes
 
 print(x_train.shape)
 print(y_train.shape)
+print(y_train)
 print(x_val.shape)
 print(y_val.shape)
 
@@ -46,11 +47,6 @@ x_val = x_val.astype('float32')
 
 y_train = y_train.astype('float32')
 y_val = y_val.astype('float32')
-
-print(x_train.shape)
-print(y_train.shape)
-print(x_val.shape)
-print(y_val.shape)
 
 # Tensorboard
 tbCallBack = keras.callbacks.TensorBoard(log_dir='/tmp/keras_logs', write_graph=True)

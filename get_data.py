@@ -75,6 +75,7 @@ def data_clean_Y(path):
     test = test[1:,1:]
     # print(test.shape)
     rest = test[:,87:]
+    # rest = StandardScaler().fit_transform(rest)
     return rest
 
 def import_data(path_train, path_test):
@@ -97,6 +98,10 @@ def import_data(path_train, path_test):
     x_validation, y_validation = zip(*c)
 
     return np.array(x_train), np.array(y_train), np.array(x_validation), np.array(y_validation), np.array(test)
+
+# a = get_total_pca('../dataset_cajamar/', 'impcons.csv', 'impsald.csv', 'numope.csv', 0.95, True)
+# print(a)
+# print(a.shape)
 
 # path_train = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt'
 # path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt'

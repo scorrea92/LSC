@@ -13,7 +13,7 @@ np.random.seed(seed)
 
 def basic_model():
     model = Sequential()
-    model.add(Dense(2048, input_shape=(11,), init='uniform', activation='relu'))
+    model.add(Dense(2048, input_shape=(76,), init='uniform', activation='relu'))
     model.add(Dense(1024, init='uniform', activation='relu'))
     model.add(Dense(512, init='uniform', activation='relu'))
     model.add(Dense(1, init='uniform', activation='linear'))
@@ -29,8 +29,8 @@ path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt
 
 x_train, y_train, x_val, y_val, test = get_data.import_data(path_train, path_test)
 
-x_train = x_train.reshape(x_train.shape[0], 78)
-x_val = x_val.reshape(x_val.shape[0], 78)
+x_train = x_train.reshape(x_train.shape[0], 76)
+x_val = x_val.reshape(x_val.shape[0], 76)
 
 x_train = x_train.astype('float32')
 x_val = x_val.astype('float32')

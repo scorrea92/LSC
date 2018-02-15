@@ -96,7 +96,7 @@ def import_data(path_train, path_test):
     random.shuffle(c)
     x_validation, y_validation = zip(*c)
 
-    return np.array(x_train), list(y_train), np.array(x_validation), list(y_validation), np.array(test)
+    return np.array(x_train), np.array(y_train), np.array(x_validation), np.array(y_validation), np.array(test)
 
 # path_train = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt'
 # path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt'

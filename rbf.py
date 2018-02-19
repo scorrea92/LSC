@@ -93,7 +93,7 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 model.add(Activation('relu'))
 
-model.compile(loss='mean_squared_error',
+model.compile(loss='mape',
                 optimizer=RMSprop(),
                 metrics=['mape'])
 

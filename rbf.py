@@ -94,8 +94,8 @@ model.add(Dense(1))
 model.add(Activation('relu'))
 
 model.compile(loss='mape',
-                optimizer=RMSprop(),
-                metrics=['mape'])
+                optimizer='adam',
+                metrics=['mse'])
 
 model.fit(x_train, y_train,
             batch_size=batchsize,

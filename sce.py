@@ -31,7 +31,7 @@ def step_decay(epoch): # 0.5 0.1 0.01 0.001
 
 def basic_model(): # 1024 512
     model = Sequential()
-    model.add(Dense(4096, input_shape=(76,)))
+    model.add(Dense(2048, input_shape=(76,)))
     model.add(Activation('relu'))
 
     model.add(Dense(2048))

@@ -18,7 +18,7 @@ batchsize = 128
 seed = 7
 np.random.seed(seed)
 
-def step_decay(epoch):
+def step_decay(epoch): # 0.5 0.1 0.01 0.001
     if epoch<30:
         lrate = 0.9
     elif epoch<=50:
@@ -31,7 +31,12 @@ def step_decay(epoch):
 
 def basic_model(): # 1024 512
     model = Sequential()
-    model.add(Dense(2048, input_shape=(76,)))
+    model.add(Dense(4096, input_shape=(76,)))
+    model.add(Activation('relu'))
+
+    model.add(Dense(2048))
+    model.add(BN())
+    model.add(GN(0.1))
     model.add(Activation('relu'))
 
     model.add(Dense(1024))

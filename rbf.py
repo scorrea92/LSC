@@ -15,7 +15,7 @@ from keras.optimizers import RMSprop
 from rbflayer import RBFLayer, InitCentersRandom
 
 # Basic NN config and reproduction seed
-epochs = 1
+epochs = 10
 batchsize = 64
 seed = 7
 np.random.seed(seed)
@@ -30,30 +30,6 @@ def step_decay(epoch):
     else:
         lrate = 0.0001
     return lrate
-
-def basic_model():
-    model = Sequential()
-    model.add(Dense(2048, input_shape=(76,)))
-    model.add(Activation('relu'))
-
-    model.add(Dense(1024))
-    model.add(BN())
-    model.add(GN(0.3))
-    model.add(Activation('relu'))
-
-    model.add(Dense(512))
-    model.add(BN())
-    model.add(GN(0.3))
-    model.add(Activation('relu'))
-
-    model.add(Dense(1))
-    model.add(Activation('relu'))
-    model.summary()
-
-    adam = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
-
-    model.compile(loss='mse', optimizer=adam, metrics=['mape', 'mse'])
-    return model
 
 def data(path_train, path_test):
     x_train, y_train, x_val, y_val, test = get_data.import_data(path_train, path_test)

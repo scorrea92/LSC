@@ -43,7 +43,7 @@ def basic_model(): # 1024 512
     model.add(BN())
     model.add(GN(0.1))
     model.add(Activation('relu'))
-    model.Dropout(0.5)
+    model.add(Dropout(0.5))
 
     model.add(Dense(1))
     model.add(Activation('relu'))

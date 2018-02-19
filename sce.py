@@ -20,24 +20,30 @@ np.random.seed(seed)
 
 def step_decay(epoch):
     if epoch<30:
-        lrate = 0.1
+        lrate = 0.5
     elif epoch<=50:
-        lrate = 0.01
+        lrate = 0.1
     elif epoch<=70:
-        lrate = 0.001
+        lrate = 0.01
     else:
-        lrate = 0.0001
+        lrate = 0.001
     return lrate
 
 def basic_model(): # 1024 512
     model = Sequential()
-    model.add(Dense(1024, input_shape=(76,)))
+    model.add(Dense(2048, input_shape=(76,)))
+    model.add(Activation('relu'))
+
+    model.add(Dense(1024))
+    model.add(BN())
+    model.add(GN(0.1))
     model.add(Activation('relu'))
 
     model.add(Dense(512))
     model.add(BN())
-    model.add(GN(0.3))
+    model.add(GN(0.1))
     model.add(Activation('relu'))
+    model.Dropout(0.5)
 
     model.add(Dense(1))
     model.add(Activation('relu'))

@@ -24,9 +24,9 @@ def step_decay(epoch): # 0.5 0.1 0.01 0.001
     elif epoch<=50:
         lrate = 0.1
     elif epoch<=70:
-        lrate = 0.5
-    else:
         lrate = 0.01
+    else:
+        lrate = 0.001
     return lrate
 
 def basic_model(): # 1024 512
@@ -43,7 +43,7 @@ def basic_model(): # 1024 512
     model.add(BN())
     model.add(GN(0.1))
     model.add(Activation('relu'))
-    model.add(Dropout(0.5))
+    #model.add(Dropout(0.5))
 
     model.add(Dense(1))
     model.add(Activation('relu'))

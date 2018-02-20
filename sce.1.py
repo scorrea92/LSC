@@ -9,7 +9,7 @@ from keras.layers.normalization import BatchNormalization as BN
 from keras.layers import GaussianNoise as GN
 from sklearn import preprocessing
 from sklearn.externals import joblib 
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer
 from keras.callbacks import LearningRateScheduler
 
 # Basic NN config and reproduction seed
@@ -51,7 +51,7 @@ def basic_model(): # 1024 512
 
     adam = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
 
-    model.compile(loss='mse', optimizer=adam, metrics=['mape'])
+    model.compile(loss='mape', optimizer=adam, metrics=['mse'])
     return model
 
 # Get Data
@@ -75,7 +75,7 @@ y_val = y_val.astype('float32')
 y_val_nostandard = y_val
 y_train_nostandard = y_train
 
-scaler = StandardScaler()
+scaler = Normalizer()
 scaler.fit(y_train)
 
 y_train = scaler.transform(y_train)

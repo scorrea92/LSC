@@ -92,6 +92,7 @@ print(error.min())
 print(error.max())
 print(error.mean())
 print(error.std())
-    
 
-
+predictions = model.predict(test)
+np.save("test_numpy",predictions)
+np.savetxt('test_numpy.txt',predictions, fmt='%d')

@@ -113,6 +113,7 @@ print("mape", mape.mean())
 predictions = model.predict(x_train)
 predictions = scaler.inverse_transform(predictions)
 error = np.absolute(predictions - y_train_nostandard)
+mape = error/predictions
 
 print("Train")
 print(error)
@@ -120,6 +121,7 @@ print(error.min())
 print(error.max())
 print(error.mean())
 print(error.std())
+print("mape", mape.mean())
 
 
     

@@ -13,7 +13,7 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from keras.callbacks import LearningRateScheduler
 
 # Basic NN config and reproduction seed
-epochs = 1
+epochs = 100
 batchsize = 128
 seed = 7
 np.random.seed(seed)

@@ -22,13 +22,13 @@ np.random.seed(seed)
 
 def step_decay(epoch):
     if epoch<30:
-        lrate = 0.1
+        lrate = 0.5
     elif epoch<=50:
-        lrate = 0.01
+        lrate = 0.1
     elif epoch<=70:
-        lrate = 0.001
+        lrate = 0.01
     else:
-        lrate = 0.0001
+        lrate = 0.001
     return lrate
 
 def data(path_train, path_test):
@@ -74,7 +74,7 @@ path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt
 x_train, y_train, x_val, y_val, test, scaler, y_val_nostandard, y_train_nostandard = data(path_train, path_test)
 
 model = Sequential()
-rbflayer = RBFLayer(64,
+rbflayer = RBFLayer(10,
                     initializer=InitCentersRandom(x_train), 
                     betas=2.0,
                     input_shape=(76,))
@@ -93,9 +93,9 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 model.add(Activation('relu'))
 
-model.compile(loss='mape',
+model.compile(loss='mse',
                 optimizer='adam',
-                metrics=['mse'])
+                metrics=['mape'])
 
 model.fit(x_train, y_train,
             batch_size=batchsize,
@@ -106,6 +106,7 @@ model.fit(x_train, y_train,
 predictions = model.predict(x_val)
 predictions = scaler.inverse_transform(predictions)
 error = np.absolute(predictions - y_val_nostandard)
+mape = error/predictions
 
 print("Val")
 print(error)
@@ -113,6 +114,7 @@ print(error.min())
 print(error.max())
 print(error.mean())
 print(error.std())
+print("mape", mape.mean())
 
 
 predictions = model.predict(x_train)

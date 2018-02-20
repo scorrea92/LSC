@@ -9,11 +9,11 @@ from keras.layers.normalization import BatchNormalization as BN
 from keras.layers import GaussianNoise as GN
 from sklearn import preprocessing
 from sklearn.externals import joblib 
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, Normalizer
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from keras.callbacks import LearningRateScheduler
 
 # Basic NN config and reproduction seed
-epochs = 10
+epochs = 100
 batchsize = 128
 seed = 7
 np.random.seed(seed)
@@ -31,19 +31,19 @@ def step_decay(epoch): # 0.5 0.1 0.01 0.001
 
 def basic_model(): # 1024 512
     model = Sequential()
-    model.add(Dense(2048, input_shape=(76,)))
+    model.add(Dense(512, input_shape=(76,)))
     model.add(Activation('relu'))
     model.add(Dropout(0.1))
     
-    model.add(Dense(1024))
-    model.add(BN())
-    model.add(GN(0.1))
-    model.add(Activation('relu'))
+    # model.add(Dense(1024))
+    # model.add(BN())
+    # model.add(GN(0.1))
+    # model.add(Activation('relu'))
 
-    model.add(Dense(512))
-    model.add(BN())
-    model.add(GN(0.1))
-    model.add(Activation('relu'))
+    # model.add(Dense(512))
+    # model.add(BN())
+    # model.add(GN(0.1))
+    # model.add(Activation('relu'))
 
     model.add(Dense(1))
     model.add(Activation('relu'))
@@ -72,15 +72,6 @@ x_val = x_val.astype('float32')
 y_train = y_train.astype('float32')
 y_val = y_val.astype('float32')
 
-y_val_nostandard = y_val
-y_train_nostandard = y_train
-
-scaler = Normalizer()
-scaler.fit(y_train)
-
-y_train = scaler.transform(y_train)
-y_val = scaler.transform(y_val)
-
 # LRA
 lrate = LearningRateScheduler(step_decay)
 
@@ -93,36 +84,14 @@ model.fit(x_train, y_train,
         validation_data=(x_val,y_val),
         callbacks=[lrate])
 
-# predictions = model.predict(x_val)
-# error = np.absolute(predictions - y_val)
-
-# print(error)
-# print(error.min())
-# print(error.max())
-# print(error.mean())
-# print(error.std())
-    
 predictions = model.predict(x_val)
-predictions = scaler.inverse_transform(predictions)
-error = np.absolute(predictions - y_val_nostandard)
-mape = error/predictions
+error = np.absolute(predictions - y_val)
 
-print("Val")
 print(error)
 print(error.min())
 print(error.max())
 print(error.mean())
 print(error.std())
-print("mape", mape.mean())
+    
 
-predictions = model.predict(x_train)
-predictions = scaler.inverse_transform(predictions)
-error = np.absolute(predictions - y_train_nostandard)
-
-print("Train")
-print(error)
-print(error.min())
-print(error.max())
-print(error.mean())
-print(error.std())
 

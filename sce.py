@@ -72,6 +72,15 @@ x_val = x_val.astype('float32')
 y_train = y_train.astype('float32')
 y_val = y_val.astype('float32')
 
+y_val_nostandard = y_val
+y_train_nostandard = y_train
+
+scaler = StandardScaler()
+scaler.fit(y_train)
+
+y_train = scaler.transform(y_train)
+y_val = scaler.transform(y_val)
+
 # LRA
 lrate = LearningRateScheduler(step_decay)
 
@@ -84,14 +93,35 @@ model.fit(x_train, y_train,
         validation_data=(x_val,y_val),
         callbacks=[lrate])
 
-predictions = model.predict(x_val)
-error = np.absolute(predictions - y_val)
+# predictions = model.predict(x_val)
+# error = np.absolute(predictions - y_val)
 
+# print(error)
+# print(error.min())
+# print(error.max())
+# print(error.mean())
+# print(error.std())
+    
+predictions = model.predict(x_val)
+predictions = scaler.inverse_transform(predictions)
+error = np.absolute(predictions - y_val_nostandard)
+
+print("Val")
 print(error)
 print(error.min())
 print(error.max())
 print(error.mean())
 print(error.std())
-    
 
+
+predictions = model.predict(x_train)
+predictions = scaler.inverse_transform(predictions)
+error = np.absolute(predictions - y_train_nostandard)
+
+print("Train")
+print(error)
+print(error.min())
+print(error.max())
+print(error.mean())
+print(error.std())
 

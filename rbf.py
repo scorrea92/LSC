@@ -80,11 +80,6 @@ rbflayer = RBFLayer(10,
                     input_shape=(76,))
 model.add(rbflayer)
 
-model.add(Dense(1024))
-model.add(BN())
-model.add(GN(0.3))
-model.add(Activation('relu'))
-
 model.add(Dense(512))
 model.add(BN())
 model.add(GN(0.3))
@@ -93,9 +88,7 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 model.add(Activation('relu'))
 
-model.compile(loss='mse',
-                optimizer='adam',
-                metrics=['mape'])
+model.compile(loss='mape', optimizer=RMSprop(), metrics=['mse'])
 
 model.fit(x_train, y_train,
             batch_size=batchsize,

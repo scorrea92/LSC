@@ -33,11 +33,13 @@ def basic_model(): # 1024 512
     model = Sequential()
     model.add(Dense(2048, input_shape=(76,)))
     model.add(Activation('relu'))
+    model.add(Dropout(0.1))
 
     model.add(Dense(1024))
     model.add(BN())
     model.add(GN(0.1))
     model.add(Activation('relu'))
+    model.add(Dropout(0.1))
 
     model.add(Dense(512))
     model.add(BN())

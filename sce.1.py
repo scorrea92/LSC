@@ -51,7 +51,7 @@ def basic_model(): # 1024 512
 
     adam = keras.optimizers.Adam(lr=0.01, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
 
-    model.compile(loss='mape', optimizer=adam, metrics=['mse'])
+    model.compile(loss='mse', optimizer=adam, metrics=['mape'])
     return model
 
 # Get Data

@@ -31,19 +31,19 @@ def step_decay(epoch): # 0.5 0.1 0.01 0.001
 
 def basic_model(): # 1024 512
     model = Sequential()
-    model.add(Dense(512, input_shape=(76,)))
+    model.add(Dense(2048, input_shape=(90,)))
     model.add(Activation('relu'))
     model.add(Dropout(0.1))
     
-    # model.add(Dense(1024))
-    # model.add(BN())
-    # model.add(GN(0.1))
-    # model.add(Activation('relu'))
+    model.add(Dense(1024))
+    model.add(BN())
+    model.add(GN(0.1))
+    model.add(Activation('relu'))
 
-    # model.add(Dense(512))
-    # model.add(BN())
-    # model.add(GN(0.1))
-    # model.add(Activation('relu'))
+    model.add(Dense(512))
+    model.add(BN())
+    model.add(GN(0.1))
+    model.add(Activation('relu'))
 
     model.add(Dense(1))
     model.add(Activation('relu'))
@@ -58,10 +58,11 @@ def basic_model(): # 1024 512
 path_train = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt'
 path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt' 
 
-x_train, y_train, x_val, y_val, test = get_data.import_data(path_train, path_test)
+x_train, y_train, x_val, y_val, test = get_data.import_nopca(path_train, path_test)
 
-x_train = x_train.reshape(x_train.shape[0], 76)
-x_val = x_val.reshape(x_val.shape[0], 76)
+print(x_train.shape)
+x_train = x_train.reshape(x_train.shape[0], 90)
+x_val = x_val.reshape(x_val.shape[0], 90)
 
 y_train = y_train.reshape(y_train.shape[0], 1)
 y_val = y_val.reshape(y_val.shape[0], 1)
@@ -92,6 +93,7 @@ print(error.min())
 print(error.max())
 print(error.mean())
 print(error.std())
-    
 
-
+predictions = model.predict(test)
+np.save("test_numpy",predictions)
+np.savetxt('test_numpy.txt',predictions)

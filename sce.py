@@ -20,13 +20,13 @@ np.random.seed(seed)
 
 def step_decay(epoch): # 0.5 0.1 0.01 0.001
     if epoch<30:
-        lrate = 0.9
-    elif epoch<=50:
         lrate = 0.5
-    elif epoch<=70:
+    elif epoch<=50:
         lrate = 0.1
-    else:
+    elif epoch<=70:
         lrate = 0.01
+    else:
+        lrate = 0.001
     return lrate
 
 def basic_model(): # 1024 512

@@ -6,17 +6,33 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import decomposition
 from sklearn.externals import joblib
 
-# fix random seed for reproducibility
+# Fix random seed para reproducir resultados
 seed = 7
 np.random.seed(seed)
 
 def getData_standard(path):
-    imp_consum = genfromtxt(path, delimiter=',')
-    x_std = StandardScaler().fit_transform(imp_consum)
+    """ Funcion que extrae los datos de un archivo csv
+        y estandariza sus valores, removiendo la media y
+        escalando a unidades de varianza. 
+      
+        Devuelve un numpy array con los datos standarizados
+    """
+    get = genfromtxt(path, delimiter=',')
+    x_std = StandardScaler().fit_transform(get)
     a = x_std
     return a
 
 def get_total_pca(path, n_impcons, n_impsald, n_numope, pca_value, recall):
+    """ Funcion a partir de un path extrae los archivos de impocins, impsald
+        y numope, necesita el nombre de cada archivo y el path donde se encuentran.
+        Esto para realizar el PCA
+
+        Procede a estandarizar los datos y luego agruparlos para realizar el PCA, si
+        es se envia el recall como true se guardara o rescribira un archivo que contiene
+        la transformacion del PCA si no cargara dicho archivo.
+
+        Devuelve un numpy matrix con la transformacion de PCA realizada.
+    """
     impcons = getData_standard(path + n_impcons)
     impsald = getData_standard(path + n_impsald)
     numope = getData_standard(path + n_numope) 
@@ -35,6 +51,12 @@ def get_total_pca(path, n_impcons, n_impsald, n_numope, pca_value, recall):
     return total_pca
 
 def data_clean_X(path):
+    """ Función que utiliza el archivo orginal del data set lo divide, realiza 
+        la transformacion de PCA, standariza, limpia y agrupa en un array que
+        sera el X del training.ç
+
+        Devuelve numpy matrix
+    """
     test = genfromtxt(path, delimiter=',')
     test = test[1:,1:]
     # print(test.shape)
@@ -48,20 +70,24 @@ def data_clean_X(path):
 
     np.place(rest, np.isnan(rest), 10301)
 
+    # Division de la columna Socio_Demo1 en 4 columnas
     a = np.trunc(rest/1000)
     b = np.trunc(rest/100) - a*10
     c = np.trunc(rest/10)- (a*100 + b*10)
     d = rest - (a*1000 + b*100 +c*10)
     rest2 = np.column_stack((a, b, c, d))
 
+    # Estadarizacion de los datos
     impcons = StandardScaler().fit_transform(impcons)
     impsald = StandardScaler().fit_transform(impsald)
     numope = StandardScaler().fit_transform(numope)
     np.place(rest0, rest0==2, 1)
     rest1 = StandardScaler().fit_transform(rest1)
 
+    # Stack de las columnas
     sub_total = np.column_stack((impcons, impsald, numope))
     
+    # Transformacion PCA
     pca = joblib.load('pca_impcons_impsald_numope.pkl')
     sub_total = pca.transform(sub_total) 
 
@@ -100,12 +126,20 @@ def data_clean_X_nopca(path):
     return sub_total
 
 def data_clean_Y(path):
+    """ Funcion que devuelve array con la salida del archivo original
+    """
     test = genfromtxt(path, delimiter=',')
     test = test[1:,1:]
     rest = test[:,87:]
     return rest
 
 def import_data(path_train, path_test):
+    """ Funcion para utilizar en el trainig solo debe pasarse los path del training
+        y del test, la funcion mezcla los datos y los divide en 20% validacion y 
+        80% trainig y prepara el archivo de test.
+
+        Devuelve matrix array de xtrain ytrain xval yval y xtest
+    """
     train_x = data_clean_X(path_train)
     train_y = data_clean_Y(path_train)
     test = data_clean_X(path_test)
@@ -150,25 +184,3 @@ def import_nopca(path_train, path_test):
     x_validation, y_validation = zip(*c)
 
     return np.array(x_train), np.array(y_train), np.array(x_validation), np.array(y_validation), np.array(test)
-
-# a = get_total_pca('../dataset_cajamar/', 'impcons.csv', 'impsald.csv', 'numope.csv', 0.95, True)
-# print(a)
-# print(a.shape)
-
-# path_train = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TRAIN.txt'
-# path_test = '../dataset_cajamar/Dataset_Salesforce_Predictive_Modelling_TEST.txt'
-
-# x_train, y_train, x_validation, y_validation, test = import_data(path_train, path_test)
-
-# print("x_train",x_train.shape)
-# print("y_train",y_train.shape)
-
-# print("x_validation",x_validation.shape)
-# print("x_validation",x_validation[0].shape)
-# print("x_validation",x_validation[0].shape)
-
-# print("y_validation",y_validation.shape)
-
-# print("test",test.shape)
-
-# print(x_train)

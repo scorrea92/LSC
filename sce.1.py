@@ -105,6 +105,7 @@ model.fit(x_train, y_train,
 predictions = model.predict(x_val)
 predictions = scaler.inverse_transform(predictions)
 error = np.absolute(predictions - y_val_nostandard)
+mape = error/predictions
 
 print("Val")
 print(error)
@@ -112,7 +113,7 @@ print(error.min())
 print(error.max())
 print(error.mean())
 print(error.std())
-
+print("mape", mape.mean())
 
 predictions = model.predict(x_train)
 predictions = scaler.inverse_transform(predictions)

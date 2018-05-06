@@ -1,6 +1,6 @@
 # LSC
 
-This repo have code of models try to solve the Datathon Cajamar UniversityHack 2018 related to Salesforce Predictive Modelling.
+This repo have the code of models try to solve the Datathon Cajamar UniversityHack 2018 related to Salesforce Predictive Modelling.
 
 **Built With**
 

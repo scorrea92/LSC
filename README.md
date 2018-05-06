@@ -10,7 +10,7 @@ This repo have the code of models try to solve the Datathon Cajamar UniversityHa
 
 ## Authors
 
-* **Lucas Rodriguez https://github.com/rodriguezlucas0302
+* **Lucas Rodriguez** [rodriguezlucas0302 github](https://github.com/rodriguezlucas0302)
 
 * **Sebastian Correa Echeverri** [scorrea92 gitlab](https://gitlab.com/scorrea92) [scorrea92 github](https://github.com/scorrea92)
 
